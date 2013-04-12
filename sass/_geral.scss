@@ -1,0 +1,101 @@
+$white: white;
+$gray: gray;
+$darkBlue: #043465;
+$darkGray: #1e2123;
+
+$obj-layout: smart;
+@import "sprites/obj/*.png";
+@include all-obj-sprites(true);
+
+body{
+    font-family: $brand-face;
+    background:{
+        image: image_url('bg.jpg');
+        repeat: no-repeat;
+        position: 0 0;
+        color: $darkBlue;
+        size: cover;
+    };
+}
+
+.fakeCombo{
+    $padding: 10px;
+    $paddingRight: 40px;
+    $totalWidth: 390px;
+    @include box-shadow(rgba($gray, 0.5) 0 0 10px 3px inset);
+    @include font-size(24px);
+    @include ellipsis;
+    @include box-sizing(border-box);
+    text-transform: uppercase;
+    color: $brand-color;
+    display: block;
+    margin: 0 auto;
+    width: $totalWidth;
+    padding: $padding;
+    padding-right: $paddingRight;
+    cursor: pointer;
+    background:{
+        image: image_url('sprites/obj/down.png');
+        repeat: no-repeat;
+        position: 97% 50%;
+        color: $white;
+    };
+}
+
+.wrapper{
+    position: relative;
+    width: 960px;
+    margin: 0 auto;
+    background:{
+        image: image_url('guia.jpg');
+        repeat: no-repeat;
+        position: 0 0;
+        color: rgba(red, .5);
+    };
+}
+
+.moca{
+    padding-top: 43px;
+    margin-left: -99px;
+}
+
+.elements{
+    position: absolute;
+    &.obj-quem-faz-fei{
+        top: 107px;
+        left: 385px;
+    }
+    &.obj-prova{
+        top: 287px;
+        left: 399px;
+    }
+    &.obj-vagas{
+        top: 393px;
+        left: 399px;
+    }
+    &.obj-tampa{
+        top: 220px;
+        left: 750px;
+    }
+}
+
+.box-conheca{
+    $padding: 100px;
+    padding-top: $padding;
+    width: 495px;
+    height: 215px - $padding;
+    background:{
+        image: image_url('box-conheca.jpg');
+        repeat: no-repeat;
+        position: 97% 50%;
+        color: $white;
+    };
+}
+
+.box-gray{
+    background-color: $darkGray;
+    padding: 20px 0;
+}
+
+
+

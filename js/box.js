@@ -1,57 +1,63 @@
-var db = {
-    "Administração": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/administracao/Paginas/administracao.aspx"
-        , track: "administracao"
-    }
-    ,"Ciência da Computação": {
-        url :"http://portal.fei.edu.br/pt-BR/ensino/graduacao/ciencia_da_computacao/Paginas/ciencia_da_computacao.aspx"
-        , track: "cdc"
-    }
-    ,"Engenharia Civil": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/engenharia_civil/Paginas/default.aspx"
-        , track: "engcivil"
-    }
-    ,"Engenharia de Automação e Controle": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_automacao_controle/Paginas/engenharia_automacao_controle.aspx"
-        , track: "engautomacaoecontrole"
-    }
-    ,"Engenharia de Materiais": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_materiais/Paginas/engenharia_materiais.aspx"
-        , track: "engmateriais"
-    }
-    ,"Engenharia de Produção": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_producao/Paginas/engenharia_producao.aspx"
-        , track: "engproducao"
-    }
-    ,"Engenharia Elétrica": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_eletrica/Paginas/engenharia_eletrica.aspx"
-        , track: "engeletrica"
-    }
-    ,"Engenharia Mecânica": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_mecanica/Paginas/engenharia_mecanica.aspx"
-        , track: "engmecanica"
-    }
-    ,"Engenharia Química": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_quimica/Paginas/engenharia_quimica.aspx"
-        , track: "engquimica"
-    }
-    ,"Engenharia Têxtil": {
-        url: "http://portal.fei.edu.br/pt-BR/ensino/graduacao/eng_textil/Paginas/engenharia_textil.aspx"
-        , track: "engtextil"
-    }
-}
-    , combo = $('.fakeCombo').fakeCombo()
-    ;
-
-combo.on('change.url', {"db": db}, function(ev) {
+var combo = $('.fakeCombo').fakeCombo();
+combo.on('change.url', function(ev) {
     var s = this;
     if (s.value)
-    {
-        _gaq.push(['_trackEvent','landing','clique', ev.data.db[this.options[this.selectedIndex].label].track]);
-        _gaq.push(function() { location = s.value; });
-    }
+        gaUpdate(
+            s.value,
+            this.options[this.selectedIndex].getAttribute('data-track'),
+            this.options[this.selectedIndex].getAttribute('data-mind')
+        );
 });
 
-$.each(db, function(k, v) {
-    combo.append('<option value="'+v.url+'">'+k+'</option>');
-});
+$('a').on('click', function(ev){
+    ev.preventDefault();
+    gaUpdate(this.href, this.getAttribute('data-track'), this.getAttribute('data-mind'));
+})
+
+function gaUpdate(url, track, mind) {
+    _gaq.push(['_trackEvent','landing','clique', track]);
+    _gaq.push(function() {
+        mmConversionTag(parseInt(mind), undefined, '_blank', url);
+        setTimeout(function(){
+            location = url
+        }, 1000);
+    });
+}
+
+// Full BG para IEs 6,7 e 8
+if(!$.support.leadingWhitespace)
+{
+    var $body = $('body').css('background','none');
+    $body.append('<div id="videoViewport"><img src="images/bg.jpg" id="imgBG"></div>');
+
+    var $viewport = $body.find('#videoViewport');
+    var $imgBG = $viewport.find('#imgBG');
+
+    var min_w = 960;
+    var vid_w_orig = 1360;
+    var vid_h_orig = 930;
+    var $win = $(window);
+
+    $win.on('load', {'win':$win, 'min': min_w, 'w_ori': vid_w_orig, 'h_ori': vid_h_orig}, function(ev) {
+        ev.data.win.on('resize', function() { resizeToCover(ev.data.win, $viewport, $imgBG); });
+        ev.data.win.trigger('resize');
+    });
+
+    function resizeToCover(win, viewport, imgBG)
+    {
+        viewport.width(win.width());
+        viewport.height(win.height());
+
+        var scale_h = win.width() / vid_w_orig;
+        var scale_v = win.height() / vid_h_orig;
+        var scale = scale_h > scale_v ? scale_h : scale_v;
+
+        if (scale * vid_w_orig < min_w) {scale = min_w / vid_w_orig;};
+
+        imgBG.width(scale * vid_w_orig);
+        imgBG.height(scale * vid_h_orig);
+
+        viewport.scrollLeft((imgBG.width() - win.width()) / 2);
+        viewport.scrollTop((imgBG.height() - win.height()) / 2);
+    };
+}

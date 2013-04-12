@@ -3,11 +3,22 @@ $gray: gray;
 $darkBlue: #043465;
 $darkGray: #1e2123;
 
-$obj-layout: smart;
+$obj-layout: horizontal;
 @import "sprites/obj/*.png";
 @include all-obj-sprites(true);
 
+$footerHeight: 20px;
+
+* {
+    margin: 0;
+}
+
+body, html{
+    height: 100%;
+}
+
 body{
+    margin: 0;
     font-family: $brand-face;
     background:{
         image: image_url('bg.jpg');
@@ -43,27 +54,46 @@ body{
 }
 
 .wrapper{
-    position: relative;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin-bottom: ($footerHeight * -1);
+}
+
+.wrapper960{
     width: 960px;
     margin: 0 auto;
+    position: relative;
+}
+
+.pog{
+    width: 300px;
+    height: 150px;
+    position: absolute;
+    top: 0;
+    right: 0;
     background:{
-        image: image_url('guia.jpg');
+        image: image_url('pog.png');
         repeat: no-repeat;
         position: 0 0;
-        color: rgba(red, .5);
-    };
+    }
+    .logo{
+        padding-left: 155px;
+        padding-top: 40px;
+    }
 }
 
 .moca{
     padding-top: 43px;
     margin-left: -99px;
+    display: block;
 }
 
 .elements{
     position: absolute;
     &.obj-quem-faz-fei{
-        top: 107px;
-        left: 385px;
+        top: 57px;
+        left: 345px;
     }
     &.obj-prova{
         top: 287px;
@@ -79,6 +109,10 @@ body{
     }
 }
 
+.box{
+    padding: 20px;
+}
+
 .box-conheca{
     $padding: 100px;
     padding-top: $padding;
@@ -87,8 +121,18 @@ body{
     background:{
         image: image_url('box-conheca.jpg');
         repeat: no-repeat;
-        position: 97% 50%;
-        color: $white;
+    };
+    float: left;
+    margin-right: 10px;
+}
+
+.box-acesse{
+    overflow: hidden;
+    width: 415px;
+    height: 215px;
+    background:{
+        image: image_url('box-acesse.jpg');
+        repeat: no-repeat;
     };
 }
 
@@ -97,5 +141,19 @@ body{
     padding: 20px 0;
 }
 
+.pushIt,
+.box-blue{
+    height: $footerHeight;
+    overflow: hidden;
+}
 
+.box-blue{
+    background-color: $darkBlue;
+}
 
+#videoViewport{
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    z-index: -1;
+}

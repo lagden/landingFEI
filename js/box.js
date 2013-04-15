@@ -16,12 +16,7 @@ $('a').on('click', function(ev){
 
 function gaUpdate(url, track, mind) {
     _gaq.push(['_trackEvent','landing','clique', track]);
-    _gaq.push(function() {
-        mmConversionTag(parseInt(mind), undefined, '_blank', url);
-        setTimeout(function(){
-            location = url
-        }, 1000);
-    });
+    _gaq.push(function() { location = url });
 }
 
 // Full BG para IEs 6,7 e 8

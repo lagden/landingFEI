@@ -16,5 +16,5 @@ $('a').on('click', function(ev){
 
 function gaUpdate(url, track, mind) {
     _gaq.push(['_trackEvent','landing','clique', track]);
-    _gaq.push(function() { location = url });
+    _gaq.push(function() { document.location = url; });
 }

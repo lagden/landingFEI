@@ -17,10 +17,8 @@ $('a').on('click', function(ev){
 function gaUpdate(url, track, mind) {
     _gaq.push(['_trackEvent','landing','clique', track]);
     _gaq.push(function() {
-        mmConversionTag(parseInt(mind), undefined, '_blank', url);
-        setTimeout(function(){
-            location = url
-        }, 1000);
+        var e = e || window.event;
+        mmConversionTag(parseInt(mind), e, '_blank', url);
     });
 }
 
